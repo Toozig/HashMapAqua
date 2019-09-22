@@ -471,7 +471,7 @@ public:
     }
 
     /**
-     * if exist, returns th value of a given key, if not throws exception.
+     * if exist, returns th value of a given key, if not throws exception
      */
     valueT operator[](const keyT &key) const
     {
