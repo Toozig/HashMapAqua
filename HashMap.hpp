@@ -222,17 +222,31 @@ public:
             return _arr[_outIdx].at(_inIdx);
         }
 
+        /**
+         *  '->' operator for the Iterator
+         * @return pointer to the cur pair the map is at
+         */
         const value_type * operator->()
         {
             return &_arr[_outIdx].at(_inIdx);
         }
 
+        /**
+         *
+         * @param rhs other iterator
+         * @return  true if both iterators points on the same obj
+         */
         bool operator==(const const_iterator &rhs)
         {
 
             return _arr == rhs._arr && _outIdx == rhs._outIdx && _inIdx == rhs._inIdx;
         }
 
+        /**
+         *
+         * @param rhs other iterator
+         * @return  false if both iterators points on the same obj
+         */
         bool operator!=(const self_type &rhs)
         {
             return !(*this == rhs);
@@ -280,27 +294,47 @@ public:
         long _inIdx;
     };
 
+    /**
+     *
+     * @return iterator that can iterate on all the obj inside the map
+     */
     const_iterator begin() const
     {
         return const_iterator(*this);
     }
 
+    /**
+     *
+     * @return iterator that can iterate on all the obj inside the map (const)
+     */
     const_iterator cbegin() const
     {
         return const_iterator(*this);
     }
 
+    /**
+   *
+   * @return iterator to the one after last place
+   */
     const_iterator end() const
     {
         int outIdx = (int) mapSize(_size);
         return const_iterator(*this, outIdx);
     }
 
+    /**
+    *
+    * @return iterator to the one after last place (const)
+    */
     const_iterator cend() const
     {
         return end();
     }
 
+
+    /**
+     * Checks if two maps are the same (capacity, size, and objects)
+     */
     bool operator==(const HashMap &other) const
     {
         if (_counter != other._counter || _size != other._size)
@@ -408,6 +442,10 @@ public:
         _counter = 0;
     }
 
+    /**
+     *  returns the value of the given key.
+     *  creates one if does not exist.
+     */
     valueT &operator[](const keyT &key)
     {
         long hash = hashKey(key);
@@ -429,6 +467,9 @@ public:
         return (--_map[hash].end())->second;
     }
 
+    /**
+     * if exist, returns th value of a given key, if not throws exception.
+     */
     valueT operator[](const keyT &key) const
     {
         long hash = hashKey(key);
@@ -440,6 +481,9 @@ public:
         throw std::invalid_argument("key does not exist");
     }
 
+    /**
+     * @return true if a given key deleted
+     */
     bool erase(const keyT &key)
     {
         long hash = hashKey(key);
@@ -458,7 +502,7 @@ public:
     }
 
     /**
-     * returns the value of a given key
+     * returns the value of a given key (const)
      */
     valueT at(const keyT &key) const
     {
@@ -474,6 +518,10 @@ public:
         }
     }
 
+
+    /**
+     * returns the value of a given key
+     */
     valueT &at(const keyT &key)
     {
         long hash = hashKey(key);
@@ -583,10 +631,29 @@ private:
         return pow(SIZE_BASE, size);
     }
 
+    /**
+     * the sizefactor to calculate the map size
+     */
     int _size;
+
+    /**
+     * The amount of obj inside the HashMap
+     */
     int _counter;
+
+    /**
+     * The lower bound of the map
+     */
     double _lowerBound;
+
+    /**
+     * The upper bound of the map.
+     */
     double _upperBound;
+
+    /**
+     * Array wich contains the buckets
+     */
     bucket * _map;
 };
 

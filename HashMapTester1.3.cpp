@@ -566,23 +566,26 @@ void testCopyToItself()
 
 int main()
 {
-    testDefConstructor();
-    testConstructorWithFactor();
-    testConstructorVectors();
-    testCopyAndAssign();
-    testIterator();
-    testClearAndCopy();
-    testCopyToItself();
-    testBucketSize();
-    testEraseContent();
-    testEraseEasyDefaultFactors();
-    testBracketsOperator();
-    testEqualityOperators();
-    insertionTest();
-    testInsertAndEraseRandom();
-    testMove();
-    checkAtUpdate();
-    std::cout << '\n';
-    std::cout << "good job!! you passed all tests!\n";
+//    testDefConstructor();
+//    testConstructorWithFactor();
+//    testConstructorVectors();
+//    testCopyAndAssign();
+//    testIterator();
+//    testClearAndCopy();
+//    testCopyToItself();
+//    testBucketSize();
+//    testEraseContent();
+//    testEraseEasyDefaultFactors();
+//    testBracketsOperator();
+//    testEqualityOperators();
+//    insertionTest();
+//    testInsertAndEraseRandom();
+//    testMove();
+//    checkAtUpdate();
+//    std::cout << '\n';
+//    std::cout << "good job!! you passed all tests!\n";
+
+
+    std::cout <<  std::stoi("-154df8") ;
     return 0;
 }

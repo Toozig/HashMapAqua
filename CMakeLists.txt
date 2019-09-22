@@ -3,4 +3,4 @@ project(HashMap)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(HashMap main.cpp HashMap.hpp HashMapTester1.3.cpp)
+add_executable(HashMap main.cpp HashMap.hpp HashMapTester1.3.cpp "Spam Detector.cpp")
