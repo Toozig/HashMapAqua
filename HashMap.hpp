@@ -1,9 +1,3 @@
-//
-// Created by toozi on 9/16/2019.
-//
-
-
-
 
 //
 // Created by toozig on 9/15/19.
@@ -54,13 +48,13 @@ public:
             _lowerBound(lowerBound),
             _upperBound(upBound),
             _size(DEFAULT_SIZE),
-            _counter(0),
-            _map(new bucket[(int) mapSize(DEFAULT_SIZE)])
+            _counter(0)
     {
         if (_lowerBound > _upperBound || _upperBound < 0 || _upperBound > 1 || _lowerBound > 1 || _lowerBound < 0)
         {
-            throw std::invalid_argument("Invalid parameters");
+            throw std::invalid_argument("Invalid parameters") ;
         }
+        _map = new bucket[(int) mapSize(DEFAULT_SIZE)] ;
     }
 
     explicit HashMap(const std::vector<keyT> &keys, const std::vector<valueT> &values)
@@ -377,7 +371,7 @@ public:
         {
             return _map[hash].at(idx).second;
         }
-        throw std::invalid_argument("key does not exist"); //todo throw exception
+        throw std::invalid_argument("key does not exist");
     }
 
     bool erase(const keyT &key)
@@ -422,13 +416,13 @@ private:
      * @param pair
      * @return  the idx, -1 if bucket is empty
      */
-    long getIdx(const std::pair<keyT, valueT> &pair, const long hash) const
+    int getIdx(const std::pair<keyT, valueT> &pair, const long hash) const
     {
         if (!_counter || !_map[hash].size())
         { return NOT_FOUND; }
         bucket list = _map[hash];
         iterator item = (std::find(list.begin(), list.end(), pair));
-        int idx = std::distance(list.begin(), (std::find(list.begin(), list.end(), pair)));
+        int idx = (int) std::distance(list.begin(), (std::find(list.begin(), list.end(), pair)));
         return idx == _map[hash].size() ? NOT_FOUND : idx;
     }
 
@@ -437,7 +431,7 @@ private:
      * @param pair
      * @return  the idx, -1 if wasnt found
      */
-    long getIdx(const keyT &key, const long hash) const
+    int getIdx(const keyT &key, const long hash) const
     {
         if (!_counter || !_map[hash].size())
         { return NOT_FOUND; }
@@ -450,7 +444,7 @@ private:
                 break;
             }
         }
-        int idx = std::distance(_map[hash].begin(), (std::find(_map[hash].begin(), _map[hash].end(), result)));
+        int idx = (int) std::distance(_map[hash].begin(), (std::find(_map[hash].begin(), _map[hash].end(), result)));
         return idx == _map[hash].size() ? NOT_FOUND : idx;
     }
 
@@ -488,12 +482,12 @@ private:
     /**
     * returns the hash value of a given key
     */
-    long hashKey(const keyT &key, int size = DEFAULT) const
+    int hashKey(const keyT &key, int size = DEFAULT) const
     {
         size = size == DEFAULT ? _size : size;
         long hash;
         hash = std::hash<keyT>{}(key);
-        return hash & ((long) mapSize(size) - 1);
+        return(int)( hash & ((long) mapSize(size) - 1));
     }
 
     /**
@@ -504,7 +498,7 @@ private:
         return pow(SIZE_BASE, size);
     }
 
-    double _size;
+    int _size;
     double _counter;
     double _lowerBound;
     double _upperBound;
