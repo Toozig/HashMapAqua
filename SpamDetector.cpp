@@ -19,10 +19,11 @@ static const int EMAIL = 2;
 static const int THRESHOLD = 3;
 
 
+static const int TWO_IN_ROW = 2;
 enum cell_type {phrase = 0 , score = 1};
 
 /**
- * object that parse and vble(HashMapalidate the correctness of the string from a file
+ * object that parse and vble(HashMap alidate the correctness of the string from a file
  */
 class Parser
 {
@@ -80,7 +81,7 @@ public:
     static bool parseLine(const std::string & string, std::string arr[NUM_OF_ARGS])
     {
 
-        int counter = NUM_OF_ARGS;
+        int counter = TWO_IN_ROW;
         std::string value;
         std::stringstream stringstream(string);
         cell_type type = phrase;
@@ -96,7 +97,7 @@ public:
             --counter;
             type = type == phrase ? score : phrase;
         }
-        return true;
+        return !counter;
     }
 
 };
@@ -139,8 +140,6 @@ int main(int argc, char *argv[])
         threshold = std::stoi(argv[THRESHOLD]);
     }
     // arg check
-    bool dfsd = fstream.fail();
-    bool afa = MAILstream.fail() ;
     if (fstream.fail() || MAILstream.fail() || !threshold)
     {
         std::cerr << "Invalid input\n";
@@ -156,16 +155,19 @@ int main(int argc, char *argv[])
     while(fstream.good())
     {
         std::getline(fstream, line);
-        if(!Parser::parseLine(line, pair))
+        if(!Parser::parseLine(line, pair) )
         {
+            if(fstream.fail() && line.empty()) { break; }
             std::cerr << "Invalid input\n";
             return EXIT_FAILURE;
         }
+        std::for_each(pair[phrase].begin(), pair[phrase].end(), [](char & c) {  c = std::tolower(c); });
         stringVec.push_back(pair[phrase]),
         intVec.push_back(std::stoi(pair[score]));
     }
     auto map = HashMap<std::string, int> (stringVec, intVec);
     std::string mail( (std::istreambuf_iterator<char>(MAILstream) ), (std::istreambuf_iterator<char>()));
+    std::for_each(mail.begin(), mail.end(), [](char & c) {  c = std::tolower(c); });
     int mailScore = 0;
     for (const auto &i : map)
     {
