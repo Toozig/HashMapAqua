@@ -10,19 +10,19 @@
 #include "HashMap.hpp"
 
 
-static const int DATABASE_FILE = 0;
+static const int DATABASE_FILE = 1;
 
-static const int NUM_OF_ARGS = 3;
+static const int NUM_OF_ARGS = 4;
 
-static const int EMAIL = 1;
+static const int EMAIL = 2;
 
-static const int THRESHOLD = 2;
+static const int THRESHOLD = 3;
 
 
 enum cell_type {phrase = 0 , score = 1};
 
 /**
- * object that parse and validate the correctness of the string from a file
+ * object that parse and vble(HashMapalidate the correctness of the string from a file
  */
 class Parser
 {
@@ -63,9 +63,7 @@ public:
      */
     static bool isValidNumber(const std::string &value)
     {
-        int res;
-        char cur = value[0];
-        int idx = 0;
+        size_t idx = 0;
         bool isValid = true;
         while(idx < value.size() && isValid)
         {
@@ -103,6 +101,11 @@ public:
 
 };
 
+
+/**
+ * This function counts how many times an expression appears in a given mail
+ * @return  the amount of times the phrase appears
+ */
 size_t phraseCounter(const std::string& mail,
                    const std::string& phrase)  {
 
@@ -125,10 +128,10 @@ int main(int argc, char *argv[])
 
     if (argc != NUM_OF_ARGS)
     {
-        std::cerr << "Useage: SpamDetector <database Path> <message path> <threshold>\n";
+        std::cerr << "Usage: SpamDetector <database path> <message path> <threshold>\n";
         return EXIT_FAILURE;
     }
-    std::fstream DBfstream(argv[DATABASE_FILE]);
+    std::fstream fstream(argv[DATABASE_FILE]);
     std::ifstream MAILstream(argv[EMAIL]);
     int threshold = 0;
     if (Parser::isValidNumber(argv[THRESHOLD]))
@@ -136,7 +139,9 @@ int main(int argc, char *argv[])
         threshold = std::stoi(argv[THRESHOLD]);
     }
     // arg check
-    if (DBfstream.fail() || MAILstream.fail(), !threshold)
+    bool dfsd = fstream.fail();
+    bool afa = MAILstream.fail() ;
+    if (fstream.fail() || MAILstream.fail() || !threshold)
     {
         std::cerr << "Invalid input\n";
         return EXIT_FAILURE;
@@ -148,9 +153,9 @@ int main(int argc, char *argv[])
     std::string pair[2];
     std::string line;
     //creates the vectore of phrase and scores;
-    while(DBfstream.good())
+    while(fstream.good())
     {
-        std::getline(DBfstream, line);
+        std::getline(fstream, line);
         if(!Parser::parseLine(line, pair))
         {
             std::cerr << "Invalid input\n";

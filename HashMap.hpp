@@ -62,10 +62,10 @@ public:
      * @param lowerBound
      */
     explicit HashMap(double lowerBound = DEFAULT_LOW_FACTOR, double upBound = DEFAULT_UP_FACOTR) :
-            _lowerBound(lowerBound),
-            _upperBound(upBound),
             _size(DEFAULT_SIZE),
-            _counter(0)
+            _counter(0),
+            _lowerBound(lowerBound),
+            _upperBound(upBound)
     {
         if (_lowerBound > _upperBound || _upperBound < 0 ||
             _upperBound > 1 || _lowerBound > 1 || _lowerBound < 0)
@@ -80,11 +80,11 @@ public:
      * @param keys  vectors of keys
      * @param values vectors of values
      */
-    explicit HashMap(const std::vector<keyT> &keys, const std::vector<valueT> &values)
-            : _lowerBound(DEFAULT_LOW_FACTOR),
-              _upperBound(DEFAULT_UP_FACOTR),
+    explicit HashMap(const std::vector<keyT> &keys, const std::vector<valueT> &values) :
               _size(DEFAULT_SIZE),
-              _counter(0)
+              _counter(0),
+             _lowerBound(DEFAULT_LOW_FACTOR),
+              _upperBound(DEFAULT_UP_FACOTR)
     {
         size_t keyNums = keys.size();
         if (keys.size() != values.size())
@@ -120,10 +120,10 @@ public:
      * Copy Ctor
      */
     HashMap(const HashMap &other) :
-            _lowerBound(other._lowerBound),
-            _upperBound(other._upperBound),
             _size(other._size),
             _counter(other._counter),
+            _lowerBound(other._lowerBound),
+            _upperBound(other._upperBound),
             _map(new bucket[(int) mapSize(other._size)])
     {
         for (int i = 0; i < mapSize(other._size); ++i)
@@ -147,10 +147,10 @@ public:
      * move Ctor
      */
     HashMap(HashMap &&other) noexcept
-            : _lowerBound(other._lowerBound),
-              _upperBound(other._upperBound),
-              _size(other._size),
+            :  _size(other._size),
               _counter(other._counter),
+             _lowerBound(other._lowerBound),
+              _upperBound(other._upperBound),
               _map(other._map)
     {
         other._counter = 0;
@@ -180,8 +180,11 @@ public:
         typedef int difference_type;
         typedef std::forward_iterator_tag iterator_category;
 
-        explicit const_iterator(const HashMap &map, long outIdx = 0, long inIdx = 0)
-                : _arr(map._map), _arrSize((size_t) mapSize(map._size)), _outIdx(outIdx), _inIdx(inIdx)
+        explicit const_iterator(const HashMap &map, size_t outIdx = 0, size_t inIdx = 0):
+         _arrSize((size_t) mapSize(map._size)),
+         _arr(map._map),
+         _outIdx(outIdx),
+         _inIdx(inIdx)
         {
             forward();
         };
@@ -286,12 +289,12 @@ public:
         /**
          * Index that follows the array of buckets
          */
-        long _outIdx;
+        size_t _outIdx;
 
         /**
          * Index that follows the buckets
          */
-        long _inIdx;
+        size_t _inIdx;
     };
 
     /**
@@ -318,7 +321,7 @@ public:
    */
     const_iterator end() const
     {
-        int outIdx = (int) mapSize(_size);
+        size_t outIdx = (size_t) mapSize(_size);
         return const_iterator(*this, outIdx);
     }
 
@@ -370,7 +373,7 @@ public:
      * @return
      */
     int capacity()
-    { return mapSize(_size); }
+    { return (int) mapSize(_size); }
 
     /**
      *
@@ -576,7 +579,7 @@ private:
             }
         }
         int idx = (int) std::distance(_map[hash].begin(), (std::find(_map[hash].begin(), _map[hash].end(), result)));
-        return idx == _map[hash].size() ? NOT_FOUND : idx;
+        return idx == (int)_map[hash].size() ? NOT_FOUND : idx;
     }
 
     /**
