@@ -53,9 +53,9 @@ class Parser
 
 public:
     /**
-     * Ctor of the parser class
+     * Ctor of the parser class is delted since this is a static class
      */
-    Parser()= default;
+    Parser()= delete;
 
 
     /**
@@ -103,6 +103,23 @@ public:
 
 };
 
+size_t phraseCounter(const std::string& mail,
+                   const std::string& phrase)  {
+
+    const size_t size = phrase.size();
+
+    size_t count = 0 ;
+    size_t pos = 0 ;
+
+    while( (pos=mail.find(phrase, pos)) !=std::string::npos) {
+        pos +=size;
+        ++count ;
+    }
+
+    return count;
+
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -112,14 +129,14 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
     std::fstream DBfstream(argv[DATABASE_FILE]);
-    std::ifstream MAILfstream(argv[EMAIL]);
+    std::ifstream MAILstream(argv[EMAIL]);
     int threshold = 0;
     if (Parser::isValidNumber(argv[THRESHOLD]))
     {
         threshold = std::stoi(argv[THRESHOLD]);
     }
     // arg check
-    if (DBfstream.fail() || MAILfstream.fail(), !threshold)
+    if (DBfstream.fail() || MAILstream.fail(), !threshold)
     {
         std::cerr << "Invalid input\n";
         return EXIT_FAILURE;
@@ -143,6 +160,14 @@ int main(int argc, char *argv[])
         intVec.push_back(std::stoi(pair[score]));
     }
     auto map = HashMap<std::string, int> (stringVec, intVec);
-
+    std::string mail( (std::istreambuf_iterator<char>(MAILstream) ), (std::istreambuf_iterator<char>()));
+    int mailScore = 0;
+    for (const auto &i : map)
+    {
+        mailScore += phraseCounter(mail, i.first) * i.second;
+    }
+    std::string res = mailScore < threshold ? "NOT_SPAM" : "SPAM";
+    std::cout << res << std::endl;
+    return 0;
 }
 
