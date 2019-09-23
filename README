@@ -1,0 +1,56 @@
+cpp_ex3
+toozig
+204096556
+######
+
+=============================================
+=  README for ex3:      HASH MAP            =
+=============================================
+
+I don't want you, there's nothing left to say
+Hash hash, hash hash
+I've already spoken, our love is broken
+Baby hash hash
+                                    P. Dolls
+
+==================
+=  Description:  =
+==================
+cpp_ex3.tar contains the following files:
+
+    -HashMap.hpp
+        Description : This file contains the template  for the HashMap container and it' iterator.
+
+    -SpamDetector.cpp
+        Description : This file contains the main function of the SpamDetector program.
+
+
+
+Classes Structure-
+
+
+                               |---Parser
+                        uses   |
+        SpamDetector ----------+
+                               |
+                               |---HashMap
+
+
+         SpamDetector function used the Parser, which is an abstract class to parse the given files.
+         The parsed data is being proccessed into HashMap and the scoring part using it to decied if
+         if a mail is Spam or not.
+
+
+About the Design:
+    The Template of the hashMap is basic and follows the given pdf instructions.
+    Since I've used array and vector to create the Hash map, and they both comes with an iterator,
+    I've chose to use this and my iterator save index for the array and to the vector that using index-points to
+    the current object.
+
+    For the parser i've used the one from the last ex with changes according to the given mission.
+    This time i saw no reason fro not making it a static class.
+
+
+
+
+
